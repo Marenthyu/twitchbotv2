@@ -1,0 +1,7 @@
+!bot#0#say#<sender>, Marenthyu is my lovely father and Developer. He's a nice Guy. If you need help with me, ask him. (c) 2014
+!swag#0#say#swag B) http://puu.sh/baD4H/2e68fc1534.jpg
+!tehurn#0#say#tEh urn! Kreygasm http://tehurn.com
+!temp#0#method#addMod
+!mod#1#say#successful.
+!openacc#1#method#openAccount
+!addfunds#1#method#af
