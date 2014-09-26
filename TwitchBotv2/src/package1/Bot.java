@@ -510,7 +510,7 @@ public class Bot extends PircBot {
 	
 	//partially copied.
 	
-	public void slots(String sender, String amountString) {
+	public void slots(String sender, String amountString) throws Exception {
 		if (!exists(sender)) openAccount(sender);
 		if ((getFunds(sender)>=Integer.parseInt(amountString))&&Integer.parseInt(amountString)>0) {
 		
@@ -565,9 +565,10 @@ public class Bot extends PircBot {
 		}
 		}
 		//TODO something wrong here
-		addFunds(sender, win);
+		addFunds(sender, win);}
 		
 	}
+	
 	
 	
 	

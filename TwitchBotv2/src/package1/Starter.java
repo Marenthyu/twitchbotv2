@@ -17,7 +17,7 @@ public class Starter {
 			System.out.println("Bot not connected, trying to connect");
 		try {
 			
-			bot.connect("irc.twitch.tv",6667,"oauth:69gony47an72cj2mxvkixrgd11cpj9r");
+			bot.connect("irc.twitch.tv",6667,"OAUTH HERE");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
