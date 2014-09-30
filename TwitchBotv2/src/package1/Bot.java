@@ -1,13 +1,3 @@
-//PrintWriter out = new PrintWriter(letzteNAME.toLowerCase()+".txt");
-//    	
-//    	out.println(infos.toString());
-//    	
-//    	
-//    	out.close();
-//BufferedReader reader = new BufferedReader(new FileReader("lolpath.txt"));
-
-
-
 //money = (Integer.parseInt(currentEntry[2]) * (1-((matchtime-(Integer.parseInt(currentEntry[3])))/matchtime))) + Integer.parseInt(currentEntry[2])
 
 package package1;
