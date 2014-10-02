@@ -4,4 +4,8 @@
 !temp#0#method#addMod
 !mod#1#say#successful.
 !openacc#1#method#openAccount
-!addfunds#1#method#af
+!myfunds#0#method#mF
+!testfunds#0#method#tF
+!slots#0#method#slots
+!addfunds#0#method#aF
+!delete#1#method#dA

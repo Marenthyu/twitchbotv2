@@ -404,6 +404,41 @@ public class Bot extends PircBot {
 		
 		
 	}
+	public void deleteAccount(String Name) throws Exception {
+		InputStream    fis;
+		BufferedReader br;
+		String         line;
+		
+		
+
+		fis = new FileInputStream("accounts.txt");
+		br = new BufferedReader(new InputStreamReader(fis, Charset.forName("UTF-8")));
+		int i = -1, temp=0;
+		System.out.println("Name: "+Name);
+		while ((line = br.readLine()) != null) {
+			System.out.println("Current line: "+line);
+			String[] parts = line.split(":");
+			i++;
+			if (parts[0].equalsIgnoreCase(Name)) {
+				System.out.println("i = "+i);
+				temp = Integer.parseInt(accounts[i][1]);
+				break;
+			}
+			
+		}
+		
+
+		// Done with the file
+		br.close();
+		br = null;
+		fis = null;
+		String content = new String(Files.readAllBytes(path2), charset);
+		content = content.replaceAll(Name+":"+temp+System.getProperty("line.separator"), "");
+		Files.write(path2, content.getBytes(charset));
+		refreshAccounts();
+		
+		
+	}
 	public int getFunds(String Name) throws Exception {
 		int ret=-1;
 		
@@ -439,7 +474,21 @@ public class Bot extends PircBot {
 	public void openAccount(String Name) {
 		System.out.println("Opening Account... "+Name);
 		try {
+			deleteAccount("testaccount");
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try {
 			out3.append(Name+":"+"1000"+System.getProperty("line.separator"));
+			out3.flush();
+			refreshAccounts();
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		}
+		try {
+			out3.append("testaccount:1000"+System.getProperty("line.separator"));
 			out3.flush();
 			refreshAccounts();
 		} catch (Exception e) {
@@ -588,6 +637,18 @@ public class Bot extends PircBot {
 		sendMessage(currChan,"Successfully added "+amount+" to "+parts[0]+"'s Account. New Balance: "+(this.getFunds(parts[0])));
 	} catch (Exception e) {
 		sendMessage(currChan,"Error while adding funds. Usage: !addfunds NAME AMOUNT");
+		e.printStackTrace();
+	}
+	
+	}
+	
+	public void dA(String sender, String input) {
+	try {
+		String[] parts = input.split(" ");
+		deleteAccount(parts[0]);
+		sendMessage(currChan,"Successfully removed "+parts[0]+"'s Account.");
+	} catch (Exception e) {
+		sendMessage(currChan,"Error while deleting account. Usage: !delete NAME");
 		e.printStackTrace();
 	}
 	

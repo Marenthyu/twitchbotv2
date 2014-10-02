@@ -1,2 +1,5 @@
-marenthyu:1100
-marenbot:1000
+marenthyu:1500
+marenbot:1200
+asdf:1000
+high0nmushrooms:200
+testaccount:1000
