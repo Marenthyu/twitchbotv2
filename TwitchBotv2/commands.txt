@@ -1,11 +1,12 @@
-!bot#0#say#<sender>, Marenthyu is my lovely father and Developer. He's a nice Guy. If you need help with me, ask him. (c) 2014
-!swag#0#say#swag B) http://puu.sh/baD4H/2e68fc1534.jpg
-!tehurn#0#say#tEh urn! Kreygasm http://tehurn.com
-!temp#0#method#addMod
-!mod#1#say#successful.
-!openacc#1#method#openAccount
-!myfunds#0#method#mF
-!testfunds#0#method#tF
-!slots#0#method#slots
-!addfunds#0#method#aF
-!delete#1#method#dA
+!bot#0#say#0#<sender>, Marenthyu is my lovely father and Developer. He's a nice Guy. If you need help with me, ask him. (c) 2014
+!swag#0#say#0#swag B) http://puu.sh/baD4H/2e68fc1534.jpg
+!tehurn#0#say#0#tEh urn! Kreygasm http://tehurn.com
+!temp#0#method#0#addMod
+!mod#1#say#0#successful.
+!openacc#1#method#0#openAccount
+!myfunds#0#method#0#mF
+!testfunds#0#method#0#tF
+!slots#0#method#0#slots
+!addfunds#0#method#0#aF
+!delete#1#method#0#dA
+!costly#0#say#1000#this costed a little...

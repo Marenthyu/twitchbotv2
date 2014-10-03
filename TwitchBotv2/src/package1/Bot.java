@@ -92,15 +92,30 @@ public class Bot extends PircBot {
 				//modOnly
 				case "1": {
 					
-						if (ismod(sender)) {
-						cmdallowed = true;
-					}
+						try {
+							if (ismod(sender)&&(getFunds(sender)>=Integer.parseInt(commands[i][3]))) {
+								addFunds(sender,Integer.parseInt(commands[i][3])*-1);
+							cmdallowed = true;
+							} else sendMessage(currChan,"Sorry, "+sender+", but you are either no mod or don't have enough Funds to use this command. It costs "+commands[i][3]);
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 				break;}
 				
 				//not modOnly
 				case "0": {
 					//System.out.println("User doesn't have to be OP to use the command.");
-					cmdallowed = true;
+					
+					try {
+						if ((getFunds(sender)>=Integer.parseInt(commands[i][3]))) {
+							addFunds(sender,Integer.parseInt(commands[i][3])*-1);
+						cmdallowed = true;
+						} else sendMessage(currChan,"Sorry, "+sender+", but you don't have enough Funds to use this command. It costs "+commands[i][3]);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				break;}
 				
 				}
@@ -109,15 +124,15 @@ public class Bot extends PircBot {
 				switch(commands[i][2]) {
 				case "say": {
 					
-					sendMessage(currChan,commands[i][3].replace("<sender>", sender));
+					sendMessage(currChan,commands[i][4].replace("<sender>", sender));
 				break;}
 				
 				case "method": {
 					
 					java.lang.reflect.Method method = null;
 					try {
-						System.out.println("Trying to call: "+commands[i][3]);
-					  method = this.getClass().getMethod(commands[i][3], String.class, String.class);
+						System.out.println("Trying to call: "+commands[i][4]);
+					  method = this.getClass().getMethod(commands[i][4], String.class, String.class);
 					} catch (SecurityException e) {
 					  e.printStackTrace();
 					} catch (NoSuchMethodException e) {
@@ -203,7 +218,7 @@ public class Bot extends PircBot {
 			
 		}
 		
-		commands = new String[countLines("commands.txt")][4];
+		commands = new String[countLines("commands.txt")][5];
 	
 		InputStream    fis;
 		BufferedReader br;
@@ -216,7 +231,7 @@ public class Bot extends PircBot {
 		
 		    String[] parts = line.split(Character.toString('#'));
 		
-		    for (int u=0;u<4;u++)
+		    for (int u=0;u<5;u++)
 		    commands[i][u] = parts[u];
 		    i++;
 		}
@@ -245,7 +260,7 @@ public class Bot extends PircBot {
 			i++;
 			if (parts[0].equalsIgnoreCase(command)) {
 //				System.out.println("i = "+i);
-				tem = commands[i][0]+"#"+commands[i][1]+"#"+commands[i][2]+"#"+commands[i][3];
+				tem = commands[i][0]+"#"+commands[i][1]+"#"+commands[i][2]+"#"+commands[i][3]+"#"+commands[i][4];
 				break;
 			}
 			
@@ -264,10 +279,10 @@ public class Bot extends PircBot {
 		refreshCommands();
 	}
 	
-	public void addCommand(String command, String modOnly, String type, String Stuff) {
+	public void addCommand(String command, String modOnly, String type,int cost, String Stuff) {
 		try {
 			
-			out2.append(command+"#"+modOnly+"#"+type+"#"+Stuff+System.getProperty("line.separator"));
+			out2.append(command+"#"+modOnly+"#"+type+"#"+cost+"#"+Stuff+System.getProperty("line.separator"));
 			out2.flush();
 			refreshCommands();
 		} catch (Exception e) {
@@ -376,6 +391,7 @@ public class Bot extends PircBot {
 		fis = new FileInputStream("accounts.txt");
 		br = new BufferedReader(new InputStreamReader(fis, Charset.forName("UTF-8")));
 		int i = -1, temp=0;
+		Name = Name.toLowerCase();
 		System.out.println("Name: "+Name);
 		while ((line = br.readLine()) != null) {
 			System.out.println("Current line: "+line);

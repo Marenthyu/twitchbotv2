@@ -1,5 +1,6 @@
-marenthyu:1500
+marenthyu:1400
 marenbot:1200
 asdf:1000
 high0nmushrooms:200
+woboro:995
 testaccount:1000

@@ -49,7 +49,7 @@ public class GUI extends JFrame implements ActionListener{
         bot=bots;
         commandlist = new List(bot.commands.length, false);
         for (int i=0;i<bot.commands.length;i++) {
-        	commandlist.add(bot.commands[i][0]+" "+bot.commands[i][1]+" "+bot.commands[i][2]+" "+bot.commands[i][3]);
+        	commandlist.add("Name: "+bot.commands[i][0]+" ModOnly: "+bot.commands[i][1]+" "+bot.commands[i][2]+" cost: "+bot.commands[i][3]+" stuff: "+bot.commands[i][4]);
         }
       
         
@@ -114,7 +114,8 @@ public class GUI extends JFrame implements ActionListener{
 				saymeth = "say";
 				stuff = JOptionPane.showInputDialog("What shall it say? (to get the writer's name, use <sender>");
 			}
-			bot.addCommand(newcommand, modonly, saymeth, stuff);
+			int cost = Integer.parseInt(JOptionPane.showInputDialog("How much shall the command cost?"));
+			bot.addCommand(newcommand, modonly, saymeth, cost, stuff);
 			refreshCommands();
 		}
 		if (e.getSource()==removecmd) {
@@ -135,7 +136,7 @@ public class GUI extends JFrame implements ActionListener{
 		c.remove(commandlist);
 		commandlist = new List(bot.commands.length, false);
 		for (int i=0;i<bot.commands.length;i++) {
-        	commandlist.add(bot.commands[i][0]+" "+bot.commands[i][1]+" "+bot.commands[i][2]+" "+bot.commands[i][3]);
+        	commandlist.add("Name: "+bot.commands[i][0]+" ModOnly: "+bot.commands[i][1]+" "+bot.commands[i][2]+" cost: "+bot.commands[i][3]+" stuff: "+bot.commands[i][4]);
         }
 		commandlist.setBounds(420, 10, 400, 400);
 		  try {
