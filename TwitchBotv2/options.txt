@@ -1,0 +1,3 @@
+testoption=true
+name=MarenBot
+oauth=OAUTH HERE

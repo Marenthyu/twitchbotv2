@@ -23,7 +23,7 @@ import org.jibble.pircbot.*;
 public class Bot extends PircBot {
 	
 	
-	private String[][] accounts;
+	String[][] accounts, commands, options;
 	
 	private static String currChan = "";
 	PrintWriter out;
@@ -32,7 +32,7 @@ public class Bot extends PircBot {
 	
 	Charset charset = StandardCharsets.UTF_8;
 	private Path path = Paths.get("commands.txt"), path2 = Paths.get("accounts.txt");
-	String[][] commands;
+	
 	InputStream    fis;
 	BufferedReader br;
 	String         rline;
@@ -62,8 +62,12 @@ public class Bot extends PircBot {
 			
 			out2 = new BufferedWriter(new FileWriter("commands.txt",true));
 			out3 = new BufferedWriter(new FileWriter("accounts.txt",true));
+			
 			refreshCommands();
 			refreshAccounts();
+			
+			
+			
 		} catch (Exception e) {
 			
 			e.printStackTrace();
@@ -214,9 +218,9 @@ public class Bot extends PircBot {
 	//commands structure: 0 = command, 1 = mod only? (0/1), 2 = type (say/method), 3 = Stuff (method Name or thing to say)
 	
 	public void refreshCommands() throws Exception {
-		if (!new File("commands.txt").exists()) {
+		new File("commands.txt").createNewFile();
 			
-		}
+		
 		
 		commands = new String[countLines("commands.txt")][5];
 	
@@ -241,6 +245,32 @@ public class Bot extends PircBot {
 		br = null;
 		fis = null;
 }
+	
+
+	public void refreshAccounts() throws Exception {
+	
+			accounts = new String[countLines("accounts.txt")][2];
+		
+			InputStream    fis;
+			BufferedReader br;
+			String         line;
+	
+			fis = new FileInputStream("accounts.txt");
+			br = new BufferedReader(new InputStreamReader(fis, Charset.forName("UTF-8")));
+			int i = 0;
+			while ((line = br.readLine()) != null) {
+				
+			    String[] parts = line.split(":");
+			    accounts[i][0] = parts[0];
+			    accounts[i][1] = parts[1];
+			    i++;
+			}
+	
+			// Done with the file
+			br.close();
+			br = null;
+			fis = null;
+	}
 
 	public void deleteCommand(String command) throws Exception {
 		InputStream    fis;
@@ -354,31 +384,6 @@ public class Bot extends PircBot {
 		fis = null;
 		System.out.println("Result: "+ret);
 		return ret;
-	}
-	
-	public void refreshAccounts() throws Exception {
-	
-			accounts = new String[countLines("accounts.txt")][2];
-		
-			InputStream    fis;
-			BufferedReader br;
-			String         line;
-
-			fis = new FileInputStream("accounts.txt");
-			br = new BufferedReader(new InputStreamReader(fis, Charset.forName("UTF-8")));
-			int i = 0;
-			while ((line = br.readLine()) != null) {
-				
-			    String[] parts = line.split(":");
-			    accounts[i][0] = parts[0];
-			    accounts[i][1] = parts[1];
-			    i++;
-			}
-
-			// Done with the file
-			br.close();
-			br = null;
-			fis = null;
 	}
 	
 	public void addFunds(String Name, int amount) throws Exception {
