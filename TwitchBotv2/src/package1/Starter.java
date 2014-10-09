@@ -31,12 +31,12 @@ public class Starter {
 			e1.printStackTrace();
 		}
 		
-		System.out.println("Getting option... Result: "+getOption("testoption"));
+		//System.out.println("Getting option... Result: "+getOption("testoption"));
 		String oauth = getOption("oauth");
 		String name = getOption("name");
 		String Channel = "#"+JOptionPane.showInputDialog("Please Input the Channel Name!", "marenthyu");
 		Bot bot = new Bot(name,Channel);
-		bot.setVerbose(true);
+		bot.setVerbose(false);
 		
 		while (!bot.isConnected()) {
 			System.out.println("Bot not connected, trying to connect");
@@ -119,15 +119,15 @@ public class Starter {
 		int i = -1;
 		String temp="";
 		option = option.toLowerCase();
-		System.out.println("Option: "+option);
+		//System.out.println("Option: "+option);
 		
 			while ((line = br.readLine()) != null) {
-				System.out.println("Current line: "+line);
+			//	System.out.println("Current line: "+line);
 				String[] parts = line.split("=");
 				i++;
 				if (parts[0].equalsIgnoreCase(option)) {
-					System.out.println("i = "+i);
-					System.out.println("Old Value: "+options[i][1]);
+				//	System.out.println("i = "+i);
+					//System.out.println("Old Value: "+options[i][1]);
 					temp = options[i][1];
 					options[i][1] = value;
 					break;
@@ -142,7 +142,7 @@ public class Starter {
 		br = null;
 		fis = null;
 		String content = new String(Files.readAllBytes(Paths.get("options.txt")));
-		System.out.println("New Value: "+options[i][1]);
+//		System.out.println("New Value: "+options[i][1]);
 		content = content.replaceAll(option+"="+temp, option+"="+options[i][1]);
 		Files.write(Paths.get("options.txt"), content.getBytes());
 		refreshOptions();} catch (Exception e) {

@@ -103,7 +103,7 @@ public class GUI extends JFrame implements ActionListener{
 			String modonly = "0";
 			String saymeth,stuff;
 			Object[] options1 = {"Say something",
-                    "Execute Method (unfinished function)",};
+                    "Execute Method",};
 			String newcommand = JOptionPane.showInputDialog("Enter Command");
 			if(JOptionPane.showConfirmDialog(null, "Shall it only be for mods?", "Please select", JOptionPane.YES_NO_OPTION)==1) {
 				modonly = "0";
@@ -119,7 +119,7 @@ public class GUI extends JFrame implements ActionListener{
 	                 options1,
 	                 null)==1) {
 				saymeth = "method";
-				stuff = JOptionPane.showInputDialog("Which method shall it call?");
+				stuff = JOptionPane.showInputDialog("Which method shall it call? (Passed strings: sender and everything after the command (in 1 string)");
 			} else {
 				saymeth = "say";
 				stuff = JOptionPane.showInputDialog("What shall it say? (to get the writer's name, use <sender>");

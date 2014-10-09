@@ -1,7 +1,6 @@
 !bot#0#say#0#<sender>, Marenthyu is my lovely father and he develops me with a couple other guys. They are awesome. If you need help with me, ask Maren. (c) 2014
 !swag#0#say#0#swag B) http://puu.sh/baD4H/2e68fc1534.jpg
 !tehurn#0#say#0#tEh urn! Kreygasm http://tehurn.com
-!temp#0#method#0#addMod
 !mod#1#say#0#successful.
 !openacc#1#method#0#openAccount
 !myfunds#0#method#0#mF

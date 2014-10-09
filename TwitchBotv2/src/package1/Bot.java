@@ -182,23 +182,23 @@ public class Bot extends PircBot {
 	}
 	
 	protected void onUserMode(String targetNick, String sourceNick, String sourceLogin, String sourceHostname, String mode) {
-		System.out.println("Mode Update!");
+		
 		//mode includes: #marenthyu +o marenthyu
-		System.out.println("currChan: "+currChan);
+//		System.out.println("currChan: "+currChan);
 		mode = mode.replace(currChan+" ", "");
-		System.out.println("After mode.replace: "+mode);
+//		System.out.println("After mode.replace: "+mode);
 		String[] modeparts = mode.split(" ");
-		System.out.println("Modeparts[0]: "+modeparts[0]+", Modeparts[1]: "+modeparts[1]);
+//		System.out.println("Modeparts[0]: "+modeparts[0]+", Modeparts[1]: "+modeparts[1]);
 		switch(modeparts[0]) {
 		
 		case "+o": {
-			
+			System.out.println("Modding "+modeparts[1]);
 			mods = mods+"#"+modeparts[1];
 			
 			break;
 		}
 		case "-o": {
-			
+			System.out.println("Unmodding "+modeparts[1]);
 			mods = mods.replace("#"+modeparts[1], "");
 			
 			break;
@@ -273,6 +273,7 @@ public class Bot extends PircBot {
 	}
 
 	public void deleteCommand(String command) throws Exception {
+		System.out.println("Deleting command "+command);
 		InputStream    fis;
 		BufferedReader br;
 		String         line;
@@ -310,13 +311,14 @@ public class Bot extends PircBot {
 	}
 	
 	public void addCommand(String command, String modOnly, String type,int cost, String Stuff) {
+		System.out.println("Adding command: "+command);
 		try {
 			
 			out2.append(command+"#"+modOnly+"#"+type+"#"+cost+"#"+Stuff+System.getProperty("line.separator"));
 			out2.flush();
 			refreshCommands();
 		} catch (Exception e) {
-			
+			System.out.println("Error Adding command; stacktrace:");
 			e.printStackTrace();
 		}
 		
@@ -357,7 +359,7 @@ public class Bot extends PircBot {
 	
 	
 	public boolean exists(String Name) throws Exception {
-		System.out.println("Testing if user exists....");
+//		System.out.println("Testing if user exists....");
 		boolean ret =false;
 		InputStream    fis;
 		BufferedReader br;
@@ -382,7 +384,7 @@ public class Bot extends PircBot {
 		br.close();
 		br = null;
 		fis = null;
-		System.out.println("Result: "+ret);
+//		System.out.println("Result: "+ret);
 		return ret;
 	}
 	
@@ -397,15 +399,15 @@ public class Bot extends PircBot {
 		br = new BufferedReader(new InputStreamReader(fis, Charset.forName("UTF-8")));
 		int i = -1, temp=0;
 		Name = Name.toLowerCase();
-		System.out.println("Name: "+Name);
+//		System.out.println("Name: "+Name);
 		while ((line = br.readLine()) != null) {
-			System.out.println("Current line: "+line);
+//			System.out.println("Current line: "+line);
 			String[] parts = line.split(":");
 			i++;
 			if (parts[0].equalsIgnoreCase(Name)) {
-				System.out.println("i = "+i);
+//				System.out.println("i = "+i);
 				temp = Integer.parseInt(accounts[i][1]);
-				System.out.println("Old Amount: "+accounts[i][1]);
+//				System.out.println("Old Amount: "+accounts[i][1]);
 				accounts[i][1] = Integer.toString((Integer.parseInt(accounts[i][1]))+amount);
 				break;
 			}
@@ -418,11 +420,11 @@ public class Bot extends PircBot {
 		br = null;
 		fis = null;
 		String content = new String(Files.readAllBytes(path2), charset);
-		System.out.println("New Amount: "+accounts[i][1]);
+//		System.out.println("New Amount: "+accounts[i][1]);
 		content = content.replaceAll(Name+":"+temp, Name+":"+accounts[i][1]);
 		Files.write(path2, content.getBytes(charset));
 		refreshAccounts();
-		
+		System.out.println("Added "+amount+" to "+Name+"'s Account. New Balance: "+accounts[i][1]);
 		
 	}
 	public void deleteAccount(String Name) throws Exception {
@@ -435,13 +437,13 @@ public class Bot extends PircBot {
 		fis = new FileInputStream("accounts.txt");
 		br = new BufferedReader(new InputStreamReader(fis, Charset.forName("UTF-8")));
 		int i = -1, temp=0;
-		System.out.println("Name: "+Name);
+//		System.out.println("Name: "+Name);
 		while ((line = br.readLine()) != null) {
-			System.out.println("Current line: "+line);
+//			System.out.println("Current line: "+line);
 			String[] parts = line.split(":");
 			i++;
 			if (parts[0].equalsIgnoreCase(Name)) {
-				System.out.println("i = "+i);
+//				System.out.println("i = "+i);
 				temp = Integer.parseInt(accounts[i][1]);
 				break;
 			}
@@ -457,6 +459,7 @@ public class Bot extends PircBot {
 		content = content.replaceAll(Name+":"+temp+System.getProperty("line.separator"), "");
 		Files.write(path2, content.getBytes(charset));
 		refreshAccounts();
+		System.out.println("Deleted "+Name+"'s Account.");
 		
 		
 	}
@@ -493,7 +496,7 @@ public class Bot extends PircBot {
 		return ret;
 	}
 	public void openAccount(String Name) {
-		System.out.println("Opening Account... "+Name);
+		System.out.println("Opening Account for "+Name);
 		try {
 			deleteAccount("testaccount");
 		} catch (Exception e1) {
