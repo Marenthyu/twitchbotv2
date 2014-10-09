@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,8 +13,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import javax.swing.JOptionPane;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 public class Starter {
 	static BufferedWriter out4;
@@ -51,6 +48,7 @@ public class Starter {
 		
 		System.out.println("Bot start up complete, opening GUI");
 		
+		@SuppressWarnings("unused")
 		GUI gui = new GUI(bot);
 
 
