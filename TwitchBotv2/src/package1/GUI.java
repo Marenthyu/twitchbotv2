@@ -6,23 +6,13 @@ import java.awt.Container;
 import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.PrintStream;
-import java.nio.charset.Charset;
-
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 public class GUI extends JFrame implements ActionListener{
 
@@ -103,7 +93,7 @@ public class GUI extends JFrame implements ActionListener{
 			String modonly = "0";
 			String saymeth,stuff;
 			Object[] options1 = {"Say something",
-                    "Execute Method (unfinished function)",};
+                    "Execute Method",};
 			String newcommand = JOptionPane.showInputDialog("Enter Command");
 			if(JOptionPane.showConfirmDialog(null, "Shall it only be for mods?", "Please select", JOptionPane.YES_NO_OPTION)==1) {
 				modonly = "0";
@@ -119,7 +109,7 @@ public class GUI extends JFrame implements ActionListener{
 	                 options1,
 	                 null)==1) {
 				saymeth = "method";
-				stuff = JOptionPane.showInputDialog("Which method shall it call?");
+				stuff = JOptionPane.showInputDialog("Which method shall it call? (Passed strings: sender and everything after the command (in 1 string)");
 			} else {
 				saymeth = "say";
 				stuff = JOptionPane.showInputDialog("What shall it say? (to get the writer's name, use <sender>");

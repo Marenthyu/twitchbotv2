@@ -27,25 +27,24 @@ public class Starter {
 			
 			refreshOptions();
 		} catch (Exception e1) {
-			
+			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		
-		System.out.println("Getting option... Result: "+getOption("testoption"));
+		//System.out.println("Getting option... Result: "+getOption("testoption"));
 		String oauth = getOption("oauth");
 		String name = getOption("name");
 		String Channel = "#"+JOptionPane.showInputDialog("Please Input the Channel Name!", "marenthyu");
 		Bot bot = new Bot(name,Channel);
-		
-		//* TODO: VERBOSE
-//		bot.setVerbose(true);
+
+		bot.setVerbose(false);
 		
 		while (!bot.isConnected()) {
 			System.out.println("Bot not connected, trying to connect");
 		try {
 			bot.connect("irc.twitch.tv",6667,oauth);
 		} catch (Exception e) {
-		
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} }
 		bot.joinChannel(Channel);
@@ -53,6 +52,7 @@ public class Starter {
 		
 		System.out.println("Bot start up complete, opening GUI");
 		
+		@SuppressWarnings("unused")
 		GUI gui = new GUI(bot);
 
 
