@@ -34,10 +34,11 @@ public class Starter {
 		//System.out.println("Getting option... Result: "+getOption("testoption"));
 		String oauth = getOption("oauth");
 		String name = getOption("name");
+		String verbose = getOption("verbose");
 		String Channel = "#"+JOptionPane.showInputDialog("Please Input the Channel Name!", "marenthyu");
 		Bot bot = new Bot(name,Channel);
-
-		bot.setVerbose(false);
+		if (verbose.equals("0"))
+		bot.setVerbose(true);
 		
 		while (!bot.isConnected()) {
 			System.out.println("Bot not connected, trying to connect");
@@ -64,7 +65,8 @@ public class Starter {
 			addOption("name",JOptionPane.showInputDialog("Please enter the bot's Name"));
 			addOption("oauth",JOptionPane.showInputDialog("Please enter the bot's oauth"));
 			addOption("greet",JOptionPane.showConfirmDialog(null, "Should the Bot greet People automatically?", "Greeting", JOptionPane.YES_NO_OPTION)+"");
-		
+			addOption("verbose",JOptionPane.showConfirmDialog(null, "Verbose Mode (Dev output)?", "Verbose", JOptionPane.YES_NO_OPTION)+"");
+			
 		} else {
 			System.out.println("Options file found, coninuing reading...");
 			}
