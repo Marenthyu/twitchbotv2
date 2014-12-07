@@ -3,4 +3,6 @@ marenbot:1200
 asdf:1000
 high0nmushrooms:200
 woboro:995
+stripedogbt:1000
+puploki:900
 testaccount:1000

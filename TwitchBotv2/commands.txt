@@ -10,3 +10,4 @@
 !addfunds#0#method#0#aF
 !delete#1#method#0#dA
 !costly#0#say#1000#this costed a little...
+!togglegreet#1#method#0#toggleGreet

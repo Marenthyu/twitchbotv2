@@ -38,6 +38,8 @@ public class Bot extends PircBot {
 	String         rline;
 	String mods = "";
 	
+	boolean greet = false;
+	
 	
 	
 	public Bot () {
@@ -71,6 +73,10 @@ public class Bot extends PircBot {
 		} catch (Exception e) {
 			
 			e.printStackTrace();
+		}
+		
+		if (Starter.getOption("greet").equals("0")) {
+			greet = true;
 		}
 	}
 	
@@ -177,8 +183,58 @@ public class Bot extends PircBot {
 		System.out.println("Unknown line received: "+line);
 	}
 	
-	public void addMod (String Name) {
+	public void addMod (String Name, String s2) {
 		onUserMode("", "", "", "", currChan+" +o "+Name);
+	}
+	
+	protected void onJoin(String channel, String sender, String login, String hostname) {
+		System.out.println(sender+" joined the channel. Greeting...");
+		if (greet) {
+		sendMessage(currChan, randomGreeting(sender));
+		
+		}
+		
+	}
+	
+	public String randomGreeting(String sender) {
+		String ret = "";
+		
+		int random = (int) (Math.random()*10);
+		
+		switch (random) {
+		
+		case 0: return "Hello "+sender+", sir jackTHULU";
+		case 1: return "Good day "+sender+", sir jackTHULU";
+		case 2: return "How's your day "+sender+"? chibiHai";
+		case 3: return "Feel Hugged "+sender+", chibiGibeHug";
+		case 4: return "Welcome to the Stream "+sender+", sir jackTHULU";
+		case 5: return "Enjoy your stay "+sender+", sir jackTHULU";
+		case 6: return sender+"joined, give a warm hello!diaW";
+		case 7: return "Hello "+sender+", how has your day been so far? jackTHULU";
+		case 8: return "Sup "+sender+" diaD";
+		case 9: return sender+" joined - Hello, sir! jackTHULU";
+		case 10: return "Feeling well, "+sender+"? Enjoy your stay! jackLOVE";
+		default: return "Hello "+sender+", sir jackTHULU";
+		
+		
+		
+		}
+		
+	
+		
+	}
+	
+	public void toggleGreet(String s, String s2) {
+		greet = !greet;
+		if (greet) {
+			Starter.setOption("greet","0");
+			sendMessage(currChan,"Greetings enabled.");
+		} else {
+			Starter.setOption("greet","1");
+			sendMessage(currChan,"Greetings disabled.");
+		}
+		
+		
 	}
 	
 	protected void onUserMode(String targetNick, String sourceNick, String sourceLogin, String sourceHostname, String mode) {

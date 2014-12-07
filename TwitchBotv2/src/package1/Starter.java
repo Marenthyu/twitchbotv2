@@ -27,7 +27,7 @@ public class Starter {
 			
 			refreshOptions();
 		} catch (Exception e1) {
-			// TODO Auto-generated catch block
+			
 			e1.printStackTrace();
 		}
 		
@@ -36,14 +36,16 @@ public class Starter {
 		String name = getOption("name");
 		String Channel = "#"+JOptionPane.showInputDialog("Please Input the Channel Name!", "marenthyu");
 		Bot bot = new Bot(name,Channel);
-		bot.setVerbose(true);
+		
+		//* TODO: VERBOSE
+//		bot.setVerbose(true);
 		
 		while (!bot.isConnected()) {
 			System.out.println("Bot not connected, trying to connect");
 		try {
 			bot.connect("irc.twitch.tv",6667,oauth);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+		
 			e.printStackTrace();
 		} }
 		bot.joinChannel(Channel);
@@ -61,6 +63,7 @@ public class Starter {
 			addOption("testoption","true");
 			addOption("name",JOptionPane.showInputDialog("Please enter the bot's Name"));
 			addOption("oauth",JOptionPane.showInputDialog("Please enter the bot's oauth"));
+			addOption("greet",JOptionPane.showConfirmDialog(null, "Should the Bot greet People automatically?", "Greeting", JOptionPane.YES_NO_OPTION)+"");
 		
 		} else {
 			System.out.println("Options file found, coninuing reading...");
@@ -105,7 +108,7 @@ public class Starter {
 		return options[i][1];
 	}
 	
-	public void setOption(String option, String value)  {
+	public static void setOption(String option, String value)  {
 		InputStream    fis;
 		BufferedReader br;
 		String         line;
@@ -121,6 +124,7 @@ public class Starter {
 		option = option.toLowerCase();
 		System.out.println("Option: "+option);
 		
+		
 			while ((line = br.readLine()) != null) {
 				System.out.println("Current line: "+line);
 				String[] parts = line.split("=");
@@ -130,6 +134,7 @@ public class Starter {
 					System.out.println("Old Value: "+options[i][1]);
 					temp = options[i][1];
 					options[i][1] = value;
+					
 					break;
 				}
 				
@@ -145,6 +150,7 @@ public class Starter {
 		System.out.println("New Value: "+options[i][1]);
 		content = content.replaceAll(option+"="+temp, option+"="+options[i][1]);
 		Files.write(Paths.get("options.txt"), content.getBytes());
+		
 		refreshOptions();} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -156,10 +162,12 @@ public class Starter {
 			out4 = new BufferedWriter(new FileWriter("options.txt",true));
 			out4.append(option+"="+value+System.getProperty("line.separator"));
 			out4.flush();
-		} catch (IOException e) {
+			refreshOptions();
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		
 	}
 	
