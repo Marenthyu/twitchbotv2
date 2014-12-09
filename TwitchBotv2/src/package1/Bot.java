@@ -27,18 +27,19 @@ public class Bot extends PircBot {
 	
 	private static String currChan = "";
 	PrintWriter out;
-	BufferedReader reader;
-	BufferedWriter out2, out3;
+	
+	BufferedWriter out2, out3, outq;
 	
 	Charset charset = StandardCharsets.UTF_8;
-	private Path path = Paths.get("commands.txt"), path2 = Paths.get("accounts.txt");
+	private Path path = Paths.get("commands.txt"), path2 = Paths.get("accounts.txt"), quotespath;
 	
-	InputStream    fis;
-	BufferedReader br;
+	InputStream    fis, fisq;
+	BufferedReader br, brq;
+	BufferedReader reader;
 	String         rline;
 	String mods = "";
 	
-	boolean greet = false;
+	boolean greet = false, quotes = false;
 	
 	
 	
@@ -78,12 +79,21 @@ public class Bot extends PircBot {
 		if (Starter.getOption("greet").equals("0")) {
 			greet = true;
 		}
+		if (Starter.getOption("quotes").equals("0")) {
+			quotes = true;
+		}
 	}
 	
 	
 	public void onMessage(String channel, String sender,
             String login, String hostname, String message) {
 		System.out.println(sender+": "+message);
+		if (quotes&&!message.startsWith("!")) {
+		System.out.println("Saving Quote...");
+		saveQuote(sender, message);
+		System.out.println("Quote saved.");
+		
+		}
 		if (message.equals("!shutdown")&&sender.equalsIgnoreCase("marenthyu")) {
 			sendMessage(channel, "Shutting down!");
 			System.exit(0);
@@ -232,6 +242,18 @@ public class Bot extends PircBot {
 		} else {
 			Starter.setOption("greet","1");
 			sendMessage(currChan,"Greetings disabled.");
+		}
+		
+		
+	}
+	public void toggleQuotes(String s, String s2) {
+		quotes = !quotes;
+		if (quotes) {
+			Starter.setOption("quotes","0");
+			sendMessage(currChan,"Quotes enabled.");
+		} else {
+			Starter.setOption("greet","1");
+			sendMessage(currChan,"Quotes disabled.");
 		}
 		
 		
@@ -734,8 +756,88 @@ public class Bot extends PircBot {
 	
 	}
 
+	public void sQ(String sender, String name) {
+	//	System.out.println("sQ called with "+name);
+		if (name.equals("")) showQuote(sender);
+		else showQuote(name);
+	}
 	
-   
-    
+	
+	public boolean setQuotePath(String name) {
+		String temp = path2.toAbsolutePath().toString().replace("accounts.txt", "")+"quotes\\";
+		if (!new File(temp).exists()) new File(temp).mkdir();
+		quotespath = Paths.get(temp+name+".txt").toAbsolutePath();
+		boolean ret = new File(quotespath.toString()).exists();
+		return ret;
+		
+	}
+	
+	public void saveQuote(String name, String quote) {
+		if (!setQuotePath(name))
+			try {
+				//System.out.println("Trying to create "+quotespath.toString());
+				new File(quotespath.toString()).createNewFile();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		
+		try {
+			outq = new BufferedWriter(new FileWriter(quotespath.toString(),true));
+			outq.append(quote+System.getProperty("line.separator"));
+			outq.flush();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void showQuote(String name) {
+		//System.out.println("showQuote called");
+		name = name.toLowerCase();
+		 if (setQuotePath(name)) {
+		//	 System.out.println("if true");
+		int max = 0;
+		try {
+			max = countLines(quotespath.toString());
+			//System.out.println("max set to "+max);
+		} catch (IOException e) {
+	
+			e.printStackTrace();
+		}
+		
+		
+		int random = (int) ((Math.random()*(max-1))+1);
+		//System.out.println("random: "+random);
+		
+		InputStream    fis;
+		BufferedReader br;
+		String         line;
+		
+		
+        try {
+		fis = new FileInputStream(quotespath.toString());
+		br = new BufferedReader(new InputStreamReader(fis, Charset.forName("UTF-8")));
+		int i = 1;
+		while ((line = br.readLine()) != null) {
+			if (i==random) {
+				sendMessage(currChan, name+" once said: "+line );
+				break;
+			}
+			i++;
+			
+		}
+		
+
+		// Done with the file
+		br.close();
+		br = null;
+		fis = null; } catch(Exception e) {
+			e.printStackTrace();
+		}} else {
+			//System.out.println("if false");
+			sendMessage(currChan, name+" hasn't spoken yet!");
+		}
+		
+	}
 
 }

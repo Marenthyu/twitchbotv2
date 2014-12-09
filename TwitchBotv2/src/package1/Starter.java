@@ -65,8 +65,9 @@ public class Starter {
 			addOption("name",JOptionPane.showInputDialog("Please enter the bot's Name"));
 			addOption("oauth",JOptionPane.showInputDialog("Please enter the bot's oauth"));
 			addOption("greet",JOptionPane.showConfirmDialog(null, "Should the Bot greet People automatically?", "Greeting", JOptionPane.YES_NO_OPTION)+"");
+			addOption("quotes",JOptionPane.showConfirmDialog(null, "Should the Bot collect Quotes from people and be able to display them?", "Quotes", JOptionPane.YES_NO_OPTION)+"");
 			addOption("verbose",JOptionPane.showConfirmDialog(null, "Verbose Mode (Dev output)?", "Verbose", JOptionPane.YES_NO_OPTION)+"");
-			
+			refreshOptions();
 		} else {
 			System.out.println("Options file found, coninuing reading...");
 			}
