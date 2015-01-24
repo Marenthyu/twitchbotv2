@@ -49,6 +49,7 @@ public class Starter {
 			e.printStackTrace();
 		} }
 		bot.joinChannel(Channel);
+		if (!getOption("silent").equals("0"))
 		bot.sendMessage(Channel, "MarenBot is now activated and ready to rock!");
 		
 		System.out.println("Bot start up complete, opening GUI");
@@ -67,6 +68,8 @@ public class Starter {
 			addOption("greet",JOptionPane.showConfirmDialog(null, "Should the Bot greet People automatically?", "Greeting", JOptionPane.YES_NO_OPTION)+"");
 			addOption("quotes",JOptionPane.showConfirmDialog(null, "Should the Bot collect Quotes from people and be able to display them?", "Quotes", JOptionPane.YES_NO_OPTION)+"");
 			addOption("verbose",JOptionPane.showConfirmDialog(null, "Verbose Mode (Dev output)?", "Verbose", JOptionPane.YES_NO_OPTION)+"");
+			addOption("silent",JOptionPane.showConfirmDialog(null, "Silent Mode??", "Silent", JOptionPane.YES_NO_OPTION)+"");
+			
 			refreshOptions();
 		} else {
 			System.out.println("Options file found, coninuing reading...");

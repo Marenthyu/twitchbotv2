@@ -95,7 +95,8 @@ public class Bot extends PircBot {
 		
 		}
 		if (message.equals("!shutdown")&&sender.equalsIgnoreCase("marenthyu")) {
-			sendMessage(channel, "Shutting down!");
+			if (!Starter.getOption("silent").equals("0"))
+				sendMessage(channel, "Shutting down!");
 			System.exit(0);
 		}
 		
@@ -215,7 +216,7 @@ public class Bot extends PircBot {
 		
 		case 0: return "Hello "+sender+", sir jackTHULU";
 		case 1: return "Good day "+sender+", sir jackTHULU";
-		case 2: return "How's your day "+sender+"? chibiHai";
+		case 2: return "How's your day "+sender+"? chibiHi";
 		case 3: return "Feel Hugged "+sender+", chibiGibeHug";
 		case 4: return "Welcome to the Stream "+sender+", sir jackTHULU";
 		case 5: return "Enjoy your stay "+sender+", sir jackTHULU";
@@ -289,6 +290,7 @@ public class Bot extends PircBot {
 	}
 	
 	public void shutdown() {
+		if (!Starter.getOption("silent").equals("0"))
 		sendMessage(currChan,"MarenBot shutting down!");
 		System.exit(0);
 	}
@@ -762,6 +764,30 @@ public class Bot extends PircBot {
 		else showQuote(name);
 	}
 	
+	public void pM(String sender, String otherargs)  {
+		
+		String parts[] = otherargs.split(" ");
+		int amount=0;
+		String receiver = parts[0];
+		try {
+		amount = Integer.parseInt(parts[1]);
+				} catch(Exception e) {
+					sendMessage(currChan, "Usage: !command RECEIVER AMOUNT");
+				}
+		try {
+			if (amount>getFunds(sender)) {
+				sendMessage(currChan, "You do not have enough Funds. Please try again.");
+			} else {
+				addFunds(sender, -amount);
+				addFunds(receiver, amount);
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+	}
 	
 	public boolean setQuotePath(String name) {
 		String temp = path2.toAbsolutePath().toString().replace("accounts.txt", "")+"quotes\\";
@@ -835,7 +861,7 @@ public class Bot extends PircBot {
 			e.printStackTrace();
 		}} else {
 			//System.out.println("if false");
-			sendMessage(currChan, name+" hasn't spoken yet!");
+			sendMessage(currChan, "Either that person didn't speak yet or you didn't provide a Name!");
 		}
 		
 	}
