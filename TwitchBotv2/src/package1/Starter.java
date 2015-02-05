@@ -35,7 +35,7 @@ public class Starter {
 		String oauth = getOption("oauth");
 		String name = getOption("name");
 		String verbose = getOption("verbose");
-		String Channel = "#"+JOptionPane.showInputDialog("Please Input the Channel Name!", "marenthyu");
+		String Channel = "#"+JOptionPane.showInputDialog("Please Input the Channel Name!", "trampolinetales");
 		Bot bot = new Bot(name,Channel);
 		if (verbose.equals("0"))
 		bot.setVerbose(true);
@@ -68,7 +68,7 @@ public class Starter {
 			addOption("greet",JOptionPane.showConfirmDialog(null, "Should the Bot greet People automatically?", "Greeting", JOptionPane.YES_NO_OPTION)+"");
 			addOption("quotes",JOptionPane.showConfirmDialog(null, "Should the Bot collect Quotes from people and be able to display them?", "Quotes", JOptionPane.YES_NO_OPTION)+"");
 			addOption("verbose",JOptionPane.showConfirmDialog(null, "Verbose Mode (Dev output)?", "Verbose", JOptionPane.YES_NO_OPTION)+"");
-			addOption("silent",JOptionPane.showConfirmDialog(null, "Silent Mode??", "Silent", JOptionPane.YES_NO_OPTION)+"");
+			addOption("silent",JOptionPane.showConfirmDialog(null, "Silent Mode?", "Silent", JOptionPane.YES_NO_OPTION)+"");
 			
 			refreshOptions();
 		} else {

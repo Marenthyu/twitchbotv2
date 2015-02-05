@@ -17,37 +17,63 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Timer;
+import java.util.TimerTask;
+
+
+
+
+
+
 
 import org.jibble.pircbot.*;
 
 public class Bot extends PircBot {
 	
 	
-	String[][] accounts, commands, options;
+	static String[][] accounts;
+
+	String[][] commands;
+
+	String[][] options;
 	
 	private static String currChan = "";
 	PrintWriter out;
 	
 	BufferedWriter out2, out3, outq;
 	
-	Charset charset = StandardCharsets.UTF_8;
-	private Path path = Paths.get("commands.txt"), path2 = Paths.get("accounts.txt"), quotespath;
+	static Charset charset = StandardCharsets.UTF_8;
+	private Path path = Paths.get("commands.txt");
+
+	private static Path path2 = Paths.get("accounts.txt");
+
+	public static int time = 1;
+	
+	private Path quotespath;
 	
 	InputStream    fis, fisq;
 	BufferedReader br, brq;
 	BufferedReader reader;
 	String         rline;
 	String mods = "";
+	public static String activepeople = "", peoplewon = "", peoplelost = "";
+	static User[] us;
 	
 	boolean greet = false, quotes = false;
+
+	static boolean verbose = false;
+
+	boolean betsopen = false, slots = false;
 	
+	TimerTask task, task2;
+	Timer timer = new Timer();
 	
 	
 	public Bot () {
 		
 		this.setName("MarenBot");
 		this.setLogin("MarenBot");
-		currChan="#marenthyu";
+		currChan="#trampolinetales";
 		setup();
 		
 	}
@@ -60,6 +86,33 @@ public class Bot extends PircBot {
 	}
 	
 	public void setup() {
+		addMod("testaccount","");
+		us = getUsers(currChan);		
+		task = new TimerTask() {
+
+			@Override
+			public void run() {
+				User[] us = Bot.us;
+				
+				for(User u:us) {
+					if (Bot.activepeople.indexOf(u.getNick())>=0) {
+						try {
+							Bot.addFunds(u.getNick(),1);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				}
+				
+				Bot.activepeople = "";
+				
+			}
+			
+		};
+		
+		
+		timer.schedule(task, 0, 60000);
+		
 		
 		try {
 			
@@ -68,7 +121,20 @@ public class Bot extends PircBot {
 			
 			refreshCommands();
 			refreshAccounts();
-			
+			task2 = new TimerTask() {
+
+				@Override
+				public void run() {
+					Bot.time++;
+					try{
+					runTimedMessages();} catch(Exception e) {
+						e.printStackTrace();
+					}
+					
+				}
+				
+			};
+			timer.schedule(task2, 0, 1000);
 			
 			
 		} catch (Exception e) {
@@ -82,15 +148,21 @@ public class Bot extends PircBot {
 		if (Starter.getOption("quotes").equals("0")) {
 			quotes = true;
 		}
+		if (Starter.getOption("verbose").equals("0")) {
+			verbose = true;
+		}
 	}
 	
 	
 	public void onMessage(String channel, String sender,
             String login, String hostname, String message) {
+		activepeople+=sender;
 		System.out.println(sender+": "+message);
 		if (quotes&&!message.startsWith("!")) {
+		if(verbose)
 		System.out.println("Saving Quote...");
 		saveQuote(sender, message);
+		if(verbose)
 		System.out.println("Quote saved.");
 		
 		}
@@ -171,6 +243,8 @@ public class Bot extends PircBot {
 			}
 		}
 		
+		
+		us = getUsers(currChan);
 	}
 	
 	private boolean ismod(String sender) {
@@ -199,11 +273,12 @@ public class Bot extends PircBot {
 	}
 	
 	protected void onJoin(String channel, String sender, String login, String hostname) {
-		System.out.println(sender+" joined the channel. Greeting...");
+		if (time>120) {
+		System.out.println(sender+" joined the channel.");
 		if (greet) {
 		sendMessage(currChan, randomGreeting(sender));
 		
-		}
+		}}
 		
 	}
 	
@@ -214,18 +289,18 @@ public class Bot extends PircBot {
 		
 		switch (random) {
 		
-		case 0: return "Hello "+sender+", sir jackTHULU";
-		case 1: return "Good day "+sender+", sir jackTHULU";
-		case 2: return "How's your day "+sender+"? chibiHi";
-		case 3: return "Feel Hugged "+sender+", chibiGibeHug";
-		case 4: return "Welcome to the Stream "+sender+", sir jackTHULU";
-		case 5: return "Enjoy your stay "+sender+", sir jackTHULU";
-		case 6: return sender+"joined, give a warm hello!diaW";
-		case 7: return "Hello "+sender+", how has your day been so far? jackTHULU";
-		case 8: return "Sup "+sender+" diaD";
-		case 9: return sender+" joined - Hello, sir! jackTHULU";
-		case 10: return "Feeling well, "+sender+"? Enjoy your stay! jackLOVE";
-		default: return "Hello "+sender+", sir jackTHULU";
+		case 0: return "Hello "+sender+", sir";
+		case 1: return "Good day "+sender+", sir";
+		case 2: return "How's your day "+sender+"?";
+		case 3: return "Feel Hugged "+sender;
+		case 4: return "Welcome to the Stream "+sender+", sir";
+		case 5: return "Enjoy your stay "+sender+", sir";
+		case 6: return sender+" joined, give a warm hello!";
+		case 7: return "Hello "+sender+", how has your day been so far? ";
+		case 8: return "Sup "+sender+"";
+		case 9: return sender+" joined - Hello, sir! ";
+		case 10: return "Feeling well, "+sender+"? Enjoy your stay!";
+		default: return "Hello "+sender+", sir";
 		
 		
 		
@@ -327,7 +402,7 @@ public class Bot extends PircBot {
 }
 	
 
-	public void refreshAccounts() throws Exception {
+	public static void refreshAccounts() throws Exception {
 	
 			accounts = new String[countLines("accounts.txt")][2];
 		
@@ -468,7 +543,7 @@ public class Bot extends PircBot {
 		return ret;
 	}
 	
-	public void addFunds(String Name, int amount) throws Exception {
+	public static void addFunds(String Name, int amount) throws Exception {
 		InputStream    fis;
 		BufferedReader br;
 		String         line;
@@ -477,7 +552,8 @@ public class Bot extends PircBot {
 
 		fis = new FileInputStream("accounts.txt");
 		br = new BufferedReader(new InputStreamReader(fis, Charset.forName("UTF-8")));
-		int i = -1, temp=0;
+		int i = -1;
+		int temp=0;
 		Name = Name.toLowerCase();
 //		System.out.println("Name: "+Name);
 		while ((line = br.readLine()) != null) {
@@ -504,6 +580,7 @@ public class Bot extends PircBot {
 		content = content.replaceAll(Name+":"+temp, Name+":"+accounts[i][1]);
 		Files.write(path2, content.getBytes(charset));
 		refreshAccounts();
+		if (verbose)
 		System.out.println("Added "+amount+" to "+Name+"'s Account. New Balance: "+accounts[i][1]);
 		
 	}
@@ -516,7 +593,9 @@ public class Bot extends PircBot {
 
 		fis = new FileInputStream("accounts.txt");
 		br = new BufferedReader(new InputStreamReader(fis, Charset.forName("UTF-8")));
-		int i = -1, temp=0;
+		int i = -1;
+		int temp=0;
+		Name = Name.toLowerCase();
 //		System.out.println("Name: "+Name);
 		while ((line = br.readLine()) != null) {
 //			System.out.println("Current line: "+line);
@@ -551,7 +630,8 @@ public class Bot extends PircBot {
 		String         line;
 		
 		
-
+		Name = Name.toLowerCase();
+		
 		fis = new FileInputStream("accounts.txt");
 		br = new BufferedReader(new InputStreamReader(fis, Charset.forName("UTF-8")));
 
@@ -571,11 +651,12 @@ public class Bot extends PircBot {
 		fis = null;
 		if (ret==-1) {
 			openAccount(Name);
-			ret = 1000;
+			ret = 0;
 		}
 		return ret;
 	}
 	public void openAccount(String Name) {
+		Name = Name.toLowerCase();
 		System.out.println("Opening Account for "+Name);
 		try {
 			deleteAccount("testaccount");
@@ -584,7 +665,7 @@ public class Bot extends PircBot {
 			e1.printStackTrace();
 		}
 		try {
-			out3.append(Name+":"+"1000"+System.getProperty("line.separator"));
+			out3.append(Name+":"+"0"+System.getProperty("line.separator"));
 			out3.flush();
 			refreshAccounts();
 		} catch (Exception e) {
@@ -592,7 +673,7 @@ public class Bot extends PircBot {
 			e.printStackTrace();
 		}
 		try {
-			out3.append("testaccount:1000"+System.getProperty("line.separator"));
+			out3.append("testaccount:"+Integer.MAX_VALUE+System.getProperty("line.separator"));
 			out3.flush();
 			refreshAccounts();
 		} catch (Exception e) {
@@ -654,6 +735,7 @@ public class Bot extends PircBot {
 	//partially copied.
 	
 	public void slots(String sender, String amountString) throws Exception {
+		if (slots) {
 		if (!exists(sender)) openAccount(sender);
 		if ((getFunds(sender)>=Integer.parseInt(amountString))&&Integer.parseInt(amountString)>0) {
 		
@@ -711,10 +793,9 @@ public class Bot extends PircBot {
 		addFunds(sender, win);}
 		
 	}
+	}
 	
-	
-	
-	
+
 	//new Written, not copied
 	
 	
@@ -740,7 +821,7 @@ public class Bot extends PircBot {
 		addFunds(parts[0],amount);
 		sendMessage(currChan,"Successfully added "+amount+" to "+parts[0]+"'s Account. New Balance: "+(this.getFunds(parts[0])));
 	} catch (Exception e) {
-		sendMessage(currChan,"Error while adding funds. Usage: !addfunds NAME AMOUNT");
+		sendMessage(currChan,"Error while adding Funds. Usage: !addbucks NAME AMOUNT");
 		e.printStackTrace();
 	}
 	
@@ -787,6 +868,136 @@ public class Bot extends PircBot {
 		}
 		
 		
+	}
+	
+	public void bG(String sender, String otherargs) {
+		if (!betsopen) {
+			sendMessage(currChan, "Bets are not open! Please wait for a Moderator to open them!");
+			return;
+		}
+		String[] args = otherargs.split(" ");
+		
+		switch (args[0].toLowerCase()) {
+		case "win": {
+			System.out.println("peoplewonindex: "+peoplewon.indexOf(sender)+"; peoplelost index:"+peoplelost.indexOf(sender));
+			if ((peoplewon.indexOf(sender)!=-1)||(peoplelost.indexOf(sender)!=-1))
+				sendMessage(currChan,sender+", you have already bet! Try again next Game!");
+			else {peoplewon+=sender+"#"; sendMessage(currChan,sender+", you succesfully bet for winning!");}
+			break;
+		}
+		
+		case "lose": {
+			System.out.println("peoplewonindex: "+peoplewon.indexOf(sender)+"; peoplelost index:"+peoplelost.indexOf(sender));
+			if ((peoplewon.indexOf(sender)!=-1)||(peoplelost.indexOf(sender)!=-1))
+				sendMessage(currChan,sender+", you have already bet! Try again next Game!");
+
+				
+				else 	{peoplelost+=sender+"#"; sendMessage(currChan,sender+", you succesfully bet for losing!");}
+			break;
+		}
+		
+		default: {
+			sendMessage(currChan, "Please try betting again: \"!bet win\" or \"!bet lose\"");
+		}
+		
+		}
+		
+	}
+	
+	public void wG(String sender, String otherargs) {
+		if (peoplewon.equals("")&&peoplelost.equals("")) {
+			sendMessage(currChan, "Noone bet yet!");
+			return;
+		}
+		String[] won = peoplewon.split("#");
+		String[] lost = peoplelost.split("#");
+		String congrats = "Congrats to ";
+		
+		for (String s:won) {
+			try {
+				congrats+=s+", ";
+				addFunds(s, 500);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		for (String s:lost) {
+			try {
+				addFunds(s, 100);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		congrats+="you have won 500 Funds for choosing correctly! Everyone else that bet got 100.";
+		sendMessage(currChan, congrats);
+		peoplewon="";
+		peoplelost="";
+		
+	}
+	
+	public void lG(String sender, String otherargs) {
+		if (peoplewon.equals("")&&peoplelost.equals("")) {
+			sendMessage(currChan, "Noone bet yet!");
+			return;
+		}
+		String[] lost = peoplewon.split("#");
+		String[] won = peoplelost.split("#");
+		String congrats = "Congrats to ";
+		
+		for (String s:won) {
+			try {
+				congrats+=s+", ";
+				addFunds(s, 500);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		for (String s:lost) {
+			try {
+				addFunds(s, 100);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		congrats+="you have won 500 Funds for choosing correctly! Everyone else that bet got 100.";
+		sendMessage(currChan, congrats);
+		peoplewon="";
+		peoplelost="";
+	}
+	
+	public void tB(String sender, String otherargs) {
+		String[] args = otherargs.split(" ");
+		try {
+		switch (args[0]) {
+		case "true" : {
+			betsopen = true;
+			sendMessage(currChan,"Bets are now open! Use !bet win/lose to bet on how the next Game will go!");
+			break;
+		}
+		
+		case "false" : {
+			betsopen=false;
+			sendMessage(currChan,"Bets are now closed!");
+			break;
+		}
+		default : {
+			betsopen=!betsopen;
+			if (betsopen) {
+				sendMessage(currChan,"Bets are now open! Use !bet win/lose to bet on how the next Game will go!");
+				
+			} else {
+				sendMessage(currChan,"Bets are now closed!");
+			}
+			}
+		}} catch(NullPointerException e) {
+			betsopen=!betsopen;
+			if (betsopen) {
+				sendMessage(currChan,"Bets are now open! Use !bet win/lose to bet on how the next Game will go!");
+				
+			} else {
+				sendMessage(currChan,"Bets are now closed!");
+			}
+		}
 	}
 	
 	public boolean setQuotePath(String name) {
@@ -862,6 +1073,39 @@ public class Bot extends PircBot {
 		}} else {
 			//System.out.println("if false");
 			sendMessage(currChan, "Either that person didn't speak yet or you didn't provide a Name!");
+		}
+		
+	}
+	
+
+	public void addTimedMessage(String message, int interval) {
+		int highest = 0;
+		for (int i = 0; i<commands.length;i++) {
+			if (commands[i][0].startsWith("!TIMER")) {
+				if (highest<Integer.parseInt(commands[i][0].replace("!TIMER", ""))) {
+					highest = Integer.parseInt(commands[i][0].replace("!TIMER", ""));
+				}
+			}
+		}
+		
+		this.addCommand("!TIMER"+(highest+1), "1", "say", interval, message);
+		
+		
+	}
+	
+	public void runTimedMessages() throws Exception {
+		if (verbose)
+		System.out.println("Current Time: "+time);
+		for (int i = 0; i<commands.length;i++) {
+			if (commands[i][0].startsWith("!TIMER")) {
+				if(verbose)
+				System.out.println("modulo: "+time%Integer.parseInt(commands[i][3]));
+				
+				if(time%Integer.parseInt(commands[i][3])==0) {
+				onMessage(currChan, "testaccount", "testaccount", "", commands[i][0]);
+				addFunds("testaccount", Integer.parseInt(commands[i][3]));
+				}
+			}
 		}
 		
 	}

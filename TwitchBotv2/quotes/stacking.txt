@@ -1,0 +1,5 @@
+What is this program for?
+Yeah I would't show your API key I could see someone getting your account banned really quick
+Twitch already said with the new setup it won't be so resource heavy so they can remove the default 15-30 sec delay
+they can move it back to like 3 seconds
+It was the big highlight at Pax south which twitch has a huge booth at right now

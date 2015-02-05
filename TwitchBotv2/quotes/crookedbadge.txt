@@ -1,0 +1,5 @@
+thank you, good sir!
+What is the point of the variables being static? Are you planning on having several instances of the program running where they would have to share data in those variables?
+brb
+*** maybe I should do some programming myself :P
+I'm going to lurk a bit. speedrun isaac or something. :)

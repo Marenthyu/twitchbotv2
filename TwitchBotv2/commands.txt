@@ -3,11 +3,22 @@
 !tehurn#0#say#0#tEh urn! Kreygasm http://tehurn.com
 !mod#1#say#0#successful.
 !openacc#1#method#0#openAccount
-!myfunds#0#method#0#mF
-!testfunds#0#method#0#tF
+!mybucks#0#method#0#mF
+!testbucks#0#method#0#tF
 !slots#0#method#0#slots
-!addfunds#0#method#0#aF
+!addbucks#0#method#0#aF
 !delete#1#method#0#dA
 !costly#0#say#1000#this costed a little...
 !togglegreet#1#method#0#toggleGreet
 !mquote#0#method#0#sQ
+!makeitso#0#say#0#~~~ Make it s(n)o(w) ~~~ http://youtu.be/RrG4JnrN5GA
+!newmap#0#say#0#We got a new Map, YEA! http://youtu.be/fB8smoEOX0s
+!program#0#say#0#I am rewriting my League of Legends Application you can find at http://marlookup.weebly.com
+!site#0#say#0#My Website can be visited at http://marlookup.weebly.com
+!gift#0#method#0#pM
+!downloadbot#0#say#0#You can see the bot's code and download it from http://github.com/Marenthyu/twitchbotv2
+!bet#0#method#0#bG
+!wonGame#1#method#0#wG
+!lostGame#1#method#0#lG
+!togglebets#1#method#0#tB
+!TIMER1#1#say#300#Remember to follow the Stream if you enjoy it! :D

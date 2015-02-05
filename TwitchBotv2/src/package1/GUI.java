@@ -21,7 +21,7 @@ public class GUI extends JFrame implements ActionListener{
 	 */
 	private static final long serialVersionUID = 1L;
 	Container c;
-	Button shutdown = new Button("Shutdown"),  addcom = new Button("Add new command"), removecmd = new Button("Remove Command");
+	Button shutdown = new Button("Shutdown"),  addcom = new Button("New cmd"), removecmd = new Button("Remove Command"), addmod = new Button("Manually add Moderator"), addtimedmessage = new Button("New Timer");
 	JTextArea output;
 	
 	List commandlist;
@@ -41,9 +41,12 @@ public class GUI extends JFrame implements ActionListener{
         output.setEditable(false);
         
         JScrollPane scrollPane = new JScrollPane(output);
+        addmod.setBounds(825, 10, 155, 85);
         removecmd.setBounds(825, 110, 155, 90);
-        addcom.setBounds(825, 215, 155, 90);
+        addcom.setBounds(825, 215, 75, 90);
+        addtimedmessage.setBounds(905, 215, 75, 90);
         shutdown.setBounds(825, 320, 155, 90);
+        
         
         bot=bots;
         commandlist = new List(bot.commands.length, false);
@@ -63,6 +66,8 @@ public class GUI extends JFrame implements ActionListener{
         removecmd.addActionListener(this);
         shutdown.addActionListener(this);
         addcom.addActionListener(this);
+        addtimedmessage.addActionListener(this);
+        addmod.addActionListener(this);
         
         try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -77,6 +82,8 @@ public class GUI extends JFrame implements ActionListener{
         c.add(addcom);
         c.add(shutdown);
         c.add(commandlist);
+        c.add(addmod);
+        c.add(addtimedmessage);
 
         
         c.setBackground(Color.getHSBColor(26, 68, 66));
@@ -128,6 +135,13 @@ public class GUI extends JFrame implements ActionListener{
 			}
 			this.refreshCommands();
 			JOptionPane.showMessageDialog(null, "Command removed.");
+		}
+		if (e.getSource()==addmod) {
+			bot.addMod(JOptionPane.showInputDialog("Please enter the Name of the Person you want to add as a Moderator").toLowerCase(), "");
+		}
+		if (e.getSource()==addtimedmessage) {
+			bot.addTimedMessage(JOptionPane.showInputDialog("Please enter the Message you want to display:"), Integer.parseInt(JOptionPane.showInputDialog("Every how many Seconds do you want to display the Message?")));
+			refreshCommands();
 		}
 	}
 

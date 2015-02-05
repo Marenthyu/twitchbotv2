@@ -1,8 +1,9 @@
-marenthyu:6124200
-marenbot:1200
-asdf:1000
-high0nmushrooms:200
-woboro:995
-stripedogbt:1000
-puploki:900
-testaccount:1000
+marenthyu:236
+high0nmushrooms:11
+lazic88:1000
+meisterjava:134
+drummernerd:50
+rave1000:1
+gazza3110:53
+downycc:2
+testaccount:2147483647

@@ -1,0 +1,7 @@
+Hey
+How did u get it to check for updates?
+But it doesn't really change anything does it?
+Good
+Do you have a website?
+you can use your site to update the program BTW!
+use networking so when the version on the site is greater then the program version it will download the update

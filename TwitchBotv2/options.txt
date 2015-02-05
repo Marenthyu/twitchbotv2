@@ -1,0 +1,7 @@
+testoption=true
+name=MarenBot
+oauth=oauth:z88bj7nvtbmqy4kst57iuem4uktzhn
+greet=0
+quotes=0
+verbose=1
+silent=1
