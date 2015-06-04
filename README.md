@@ -1,3 +1,8 @@
+Project Closed
+===========
+
+This project is no longer maintained. For the updated version, check http://marenthyu.de
+
 twitchbotv2
 ===========
 
